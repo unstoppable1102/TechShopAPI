@@ -1,0 +1,14 @@
+jwt:
+  expiryTime: 1000*60*60*24
+  expiryDate: 14
+  secretKey: 8776fa9afd3917139f58e00a86165ed729a48dd5d53a9502322ffbb7f92965b9
+  refreshKey: 8uQ9g+VjcBSQv8DWHTP3bwscdzUFb/iSAtBZoAw/qyM=
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size : 20
+      connection-timeout : 10000  # 10 giây
+      idle-timeout: 30000   # 30 giây
+      max-lifetime: 1800000  # 30 phút
+      leak-detection-threshold: 2000  # 2 giây
