@@ -49,7 +49,6 @@ public class PreFilter extends OncePerRequestFilter {
 
         if (StringUtils.isNotEmpty(userName) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userName);
-            log.info(userDetails.getUsername());
            if (jwtService.isValid(token, ACCESS_TOKEN, userDetails)) {
                 log.info(userDetails.getUsername());
                 SecurityContext context = SecurityContextHolder.createEmptyContext();

@@ -2,6 +2,8 @@ package com.bkap.techshop.dto.response;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Builder
 @Setter
@@ -17,4 +19,6 @@ public class UserResponse {
     private String email;
 
     private String phone;
+
+    private Date birthday;
 }

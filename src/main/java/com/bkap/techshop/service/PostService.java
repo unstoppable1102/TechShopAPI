@@ -12,4 +12,5 @@ public interface PostService {
     PostResponse create(PostRequestDto request);
     PostResponse update(long id, PostRequestDto request);
     void delete(long id);
+    List<PostResponse> findByTitle(String title);
 }

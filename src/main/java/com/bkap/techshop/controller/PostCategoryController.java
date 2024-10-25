@@ -62,7 +62,7 @@ public class PostCategoryController {
         postCategoryService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message(HttpStatus.NO_CONTENT.getReasonPhrase())
+                .message("Post Category is deleted successfully!")
                 .build();
     }
 }

@@ -75,7 +75,7 @@ public class CategoryController {
         categoryService.delete(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
+                .message("Category is deleted successfully!")
                 .build();
     }
 }

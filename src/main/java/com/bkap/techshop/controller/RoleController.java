@@ -39,7 +39,7 @@ public class RoleController {
         roleService.delete(role);
         return ApiResponse.<String>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message("Role has been deleted")
+                .message("Role is deleted successfully!")
                 .build();
 
     }

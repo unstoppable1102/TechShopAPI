@@ -1,5 +1,5 @@
 jwt:
-  expiryTime: 1000*60*60*24
+  expiryTime: 24
   expiryDate: 14
   secretKey: 8776fa9afd3917139f58e00a86165ed729a48dd5d53a9502322ffbb7f92965b9
   refreshKey: 8uQ9g+VjcBSQv8DWHTP3bwscdzUFb/iSAtBZoAw/qyM=

@@ -1,7 +1,5 @@
 package com.bkap.techshop.dto.response;
-
-import com.bkap.techshop.entity.CartItem;
-import com.bkap.techshop.entity.User;
+import jakarta.persistence.Transient;
 import lombok.*;
 
 import java.util.List;
@@ -14,7 +12,10 @@ import java.util.List;
 public class CartResponse {
 
     private Long id;
-    private User user;
-    private List<CartItem> items;
+    private Long userId;
+    private List<CartItemResponse> items;
+    private double totalPrice;
+    @Transient
+    private int countCartItem;
 
 }

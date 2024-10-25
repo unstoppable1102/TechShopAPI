@@ -60,7 +60,7 @@ public class UserController {
         userService.delete(id);
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message(HttpStatus.NO_CONTENT.getReasonPhrase())
+                .message("User is deleted successfully!")
                 .build();
     }
 }

@@ -6,6 +6,7 @@ import com.bkap.techshop.entity.PostCategory;
 import com.bkap.techshop.exception.AppException;
 import com.bkap.techshop.exception.ErrorCode;
 import com.bkap.techshop.repository.PostCategoryRepository;
+import com.bkap.techshop.repository.PostRepository;
 import com.bkap.techshop.service.PostCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,7 @@ public class PostCategoryServiceImpl implements PostCategoryService {
 
     private final PostCategoryRepository postCategoryRepository;
     private final ModelMapper modelMapper;
+    private final PostRepository postRepository;
 
     @Override
     public List<PostCategoryResponse> findAll() {
@@ -53,6 +55,10 @@ public class PostCategoryServiceImpl implements PostCategoryService {
 
     @Override
     public void delete(long id) {
+        boolean exists = postRepository.existsByPostCategoryId(id);
+        if (exists) {
+            throw new AppException(ErrorCode.POST_EXIST_IN_POST_CATEGORY);
+        }
         postCategoryRepository.deleteById(id);
     }
 }

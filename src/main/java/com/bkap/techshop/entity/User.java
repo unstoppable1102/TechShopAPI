@@ -44,11 +44,14 @@ public class User extends BaseModel implements UserDetails, Serializable {
 
     @ManyToMany
     @JoinTable(
-            name = "user_roles", // Tên bảng trung gian
+            name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<CartItem> items = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

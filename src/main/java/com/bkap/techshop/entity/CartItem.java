@@ -16,16 +16,18 @@ public class CartItem extends BaseModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cart_id" , referencedColumnName = "id" , insertable = false , updatable = false)
-    private Cart cart;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="product_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name="product_id", referencedColumnName = "id")
     private Product product;
 
     private int quantity;
+
+    @Transient
+    private int countCartItem;
 }

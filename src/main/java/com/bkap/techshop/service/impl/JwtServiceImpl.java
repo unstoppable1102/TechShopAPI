@@ -29,6 +29,9 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.expiryDate}")
     private Long expiryDate;
 
+    @Value("${jwt.expiryTime}")
+    private Long expiryTime;
+
     @Value("${jwt.secretKey}")
     private String secretKey;
 
@@ -59,12 +62,12 @@ public class JwtServiceImpl implements JwtService {
 
 
     private String generateToken(Map<String, Objects> claims, UserDetails userDetails) {
-        log.info(userDetails.toString());
+        log.info(userDetails.getUsername());
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*4))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*expiryTime))
                 .signWith(getKey(ACCESS_TOKEN), SignatureAlgorithm.HS256)
                 .compact();
     }

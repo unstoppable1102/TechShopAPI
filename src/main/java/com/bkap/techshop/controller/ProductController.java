@@ -73,7 +73,7 @@ public class ProductController {
         productService.deleteProduct(id);
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.NO_CONTENT.value())
-                .message(HttpStatus.NO_CONTENT.getReasonPhrase())
+                .message("Product is deleted successfully!")
                 .build();
 
     }

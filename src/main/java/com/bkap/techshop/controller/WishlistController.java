@@ -2,7 +2,6 @@ package com.bkap.techshop.controller;
 
 import com.bkap.techshop.dto.response.ApiResponse;
 import com.bkap.techshop.entity.Wishlist;
-import com.bkap.techshop.service.CartService;
 import com.bkap.techshop.service.WishlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,10 +17,10 @@ import java.util.Map;
 public class WishlistController {
 
     private final WishlistService wishlistService;
-    private final CartService cartService;
 
     @GetMapping
     public ApiResponse<Map<String, Object>> getWishlist(@RequestParam("userId") long userId) {
+
         Map<String, Object> response = new HashMap<>();
 
         // Lấy danh sách các wishlist
@@ -67,24 +66,24 @@ public class WishlistController {
                 .build();
     }
 
-    @GetMapping("/total-price")
-    public ApiResponse<Double> getTotalPrice(@RequestParam("userId") Long userId) {
-        Double totalPrice = (userId != null) ? cartService.calculateTotalPrice(userId) : 0.0;
-        return ApiResponse.<Double>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(totalPrice)
-                .build();
-    }
+//    @GetMapping("/total-price")
+//    public ApiResponse<Double> getTotalPrice(@RequestParam("userId") Long userId) {
+//        Double totalPrice = (userId != null) ? cartService.calculateTotalPrice(userId) : 0.0;
+//        return ApiResponse.<Double>builder()
+//                .code(HttpStatus.OK.value())
+//                .message(HttpStatus.OK.getReasonPhrase())
+//                .result(totalPrice)
+//                .build();
+//    }
 
-    @GetMapping("/cart-item-count")
-    public ApiResponse<Long> getCountCartItem(@RequestParam("userId") Long userId) {
-        Long countCartItem = (userId != null) ? cartService.countItemsInCart(userId) : 0;
-        return ApiResponse.<Long>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(countCartItem)
-                .build();
-
-    }
+//    @GetMapping("/cart-item-count")
+//    public ApiResponse<Long> getCountCartItem(@RequestParam("userId") Long userId) {
+//        Long countCartItem = (userId != null) ? cartService.countItemsInCart(userId) : 0;
+//        return ApiResponse.<Long>builder()
+//                .code(HttpStatus.OK.value())
+//                .message(HttpStatus.OK.getReasonPhrase())
+//                .result(countCartItem)
+//                .build();
+//
+//    }
 }

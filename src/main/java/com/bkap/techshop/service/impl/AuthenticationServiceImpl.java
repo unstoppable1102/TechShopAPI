@@ -18,6 +18,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.StringJoiner;
 
 import static com.bkap.techshop.common.util.TokenType.ACCESS_TOKEN;
 import static com.bkap.techshop.common.util.TokenType.REFRESH_TOKEN;
@@ -37,7 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         User user = userService.findByUsername(request.getUsername());
-        log.info(user.toString());
+        log.info(user.getUsername());
 //
         String accessToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -96,5 +99,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         tokenService.deleteToken(currentToken);
 
         return "logout";
+    }
+
+    private String buildScope(User user) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+
+        if (!CollectionUtils.isEmpty(user.getRoles()))
+            user.getRoles().forEach(role ->{
+                stringJoiner.add("ROLE_" + role.getName());
+
+            });
+        return stringJoiner.toString();
     }
 }

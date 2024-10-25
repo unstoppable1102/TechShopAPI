@@ -1,5 +1,6 @@
 package com.bkap.techshop.service.impl;
 
+import com.bkap.techshop.common.util.UploadFileUtil;
 import com.bkap.techshop.dto.request.ProductCreateRequest;
 import com.bkap.techshop.dto.response.ProductResponse;
 import com.bkap.techshop.entity.Category;
@@ -12,13 +13,7 @@ import com.bkap.techshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +24,7 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
+    private final UploadFileUtil uploadFileUtil;
 
     @Override
     public List<ProductResponse> getAllProducts() {
@@ -54,7 +50,7 @@ public class ProductServiceImpl implements ProductService{
         product.setCategory(category);
 
         //Xu ly lưu file ảnh
-        String imagePath = saveImage(request.getImage());
+        String imagePath = uploadFileUtil.saveImage(request.getImage());
         product.setImage(imagePath);
 
         return modelMapper.map(productRepository.save(product), ProductResponse.class);
@@ -76,7 +72,7 @@ public class ProductServiceImpl implements ProductService{
 
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             //save image into folder
-            String imagePath = saveImage(request.getImage());
+            String imagePath = uploadFileUtil.saveImage(request.getImage());
             product.setImage(imagePath);
         }
 
@@ -97,21 +93,4 @@ public class ProductServiceImpl implements ProductService{
                 .collect(Collectors.toList());
     }
 
-    private String saveImage(MultipartFile imageFile) {
-        String fileName = imageFile.getOriginalFilename();
-
-        try{
-            Path uploadPath = Paths.get("src/main/resources/uploads");
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectory(uploadPath);
-            }
-            assert fileName != null;
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            return fileName;
-        }catch (IOException e){
-            throw new RuntimeException("Fail to store file", e);
-        }
-
-    }
 }

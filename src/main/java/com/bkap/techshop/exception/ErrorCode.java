@@ -24,6 +24,10 @@ public enum ErrorCode {
     POST_CATEGORY_NOT_FOUND(1014, "PostCategory not found", HttpStatus.BAD_REQUEST),
     CATEGORY_NOT_FOUND(1015, "Category not found", HttpStatus.BAD_REQUEST),
     PRODUCT_EXIST_IN_CATEGORY(1016, "product exist in category", HttpStatus.BAD_REQUEST),
+    POST_NOT_FOUND(1016, "Post not found", HttpStatus.BAD_REQUEST),
+    POST_EXIST_IN_POST_CATEGORY(1016, "post exist in post category", HttpStatus.BAD_REQUEST),
+    COMMENT_NOT_FOUND(1017, "Comment not found", HttpStatus.BAD_REQUEST),
+    CART_NOT_FOUND(1018, "Cart not found", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
@@ -32,7 +36,7 @@ public enum ErrorCode {
         this.statusCode = statusCode;
     }
 
-    private int code;
-    private String message;
-    private HttpStatusCode statusCode;
+    private final int code;
+    private final String message;
+    private final HttpStatusCode statusCode;
 }

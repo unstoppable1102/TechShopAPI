@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> findAll() {
 
         List<User> users = userRepository.findAll();
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse findById(long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return modelMapper.map(user, UserResponse.class);
     }
 
@@ -66,6 +65,7 @@ public class UserServiceImpl implements UserService {
         Role userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
         user.setRoles(Set.of(userRole));
+        user.setStatus(true);
         // Lưu người dùng vào database
         user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
 
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse update(long id, UserRequestDto request) {
         // Tìm người dùng theo id
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         // Cập nhật thông tin từ request lên đối tượng user
         modelMapper.map(request, user);
