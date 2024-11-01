@@ -31,12 +31,16 @@ public class CategoryController {
 
     @PostMapping
     public ApiResponse<CategoryResponse> create(@RequestBody CategoryRequest request){
-        CategoryResponse categoryResponse = categoryService.save(request);
-        return ApiResponse.<CategoryResponse>builder()
-                .code(HttpStatus.CREATED.value())
-                .message(HttpStatus.CREATED.getReasonPhrase())
-                .result(categoryResponse)
-                .build();
+        try {
+            CategoryResponse categoryResponse = categoryService.save(request);
+            return ApiResponse.<CategoryResponse>builder()
+                    .code(HttpStatus.CREATED.value())
+                    .message(HttpStatus.CREATED.getReasonPhrase())
+                    .result(categoryResponse)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
 
 
@@ -66,12 +70,16 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public ApiResponse<CategoryResponse> update(@PathVariable long id, @RequestBody CategoryRequest request){
-        CategoryResponse categoryResponse = categoryService.update(id, request);
-        return ApiResponse.<CategoryResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(categoryResponse)
-                .build();
+        try {
+            CategoryResponse categoryResponse = categoryService.update(id, request);
+            return ApiResponse.<CategoryResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(categoryResponse)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -83,7 +91,7 @@ public class CategoryController {
                     .message("Category is deleted successfully!")
                     .build();
         }catch (Exception e){
-            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
 }

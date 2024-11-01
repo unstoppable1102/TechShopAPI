@@ -5,6 +5,8 @@ import com.bkap.techshop.dto.response.TokenResponse;
 
 import com.bkap.techshop.entity.Token;
 import com.bkap.techshop.entity.User;
+import com.bkap.techshop.exception.AppException;
+import com.bkap.techshop.exception.ErrorCode;
 import com.bkap.techshop.service.AuthenticationService;
 import com.bkap.techshop.service.JwtService;
 import com.bkap.techshop.service.TokenService;
@@ -17,10 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import java.util.StringJoiner;
 
 import static com.bkap.techshop.common.util.TokenType.ACCESS_TOKEN;
 import static com.bkap.techshop.common.util.TokenType.REFRESH_TOKEN;
@@ -37,9 +37,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public TokenResponse authenticate(SignInRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        User user = null;
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        User user = userService.findByUsername(request.getUsername());
+            user = userService.findByUsername(request.getUsername());
+        } catch (AuthenticationException e) {
+            throw  new AppException(ErrorCode.LOGIN_FAIL);
+        }
         log.info(user.getUsername());
 //
         String accessToken = jwtService.generateToken(user);
@@ -64,7 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //validate
         String refreshToken = request.getHeader("x-token");
         if (StringUtils.isBlank(refreshToken)) {
-            throw new RuntimeException("Token must be not blank");
+            throw new AppException(ErrorCode.TOKEN_REQUIRED);
         }
 
         //extract user from token
@@ -74,7 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = userService.findByUsername(username);
 
         if (!jwtService.isValid(refreshToken,REFRESH_TOKEN, user)) {
-            throw new RuntimeException("Token is invalid");
+            throw new AppException(ErrorCode.INVALID_TOKEN);
         }
 
         String accessToken = jwtService.generateToken(user);
@@ -90,7 +95,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //validate
         String refreshToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.isBlank(refreshToken)) {
-            throw new RuntimeException("Token must be not blank");
+            throw new AppException(ErrorCode.TOKEN_REQUIRED);
         }
 
         //extract user from token
@@ -98,17 +103,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Token currentToken = tokenService.findTokenByUsername(username);
         tokenService.deleteToken(currentToken);
 
-        return "logout";
+        return "Logout successful";
     }
 
-    private String buildScope(User user) {
-        StringJoiner stringJoiner = new StringJoiner(" ");
-
-        if (!CollectionUtils.isEmpty(user.getRoles()))
-            user.getRoles().forEach(role ->{
-                stringJoiner.add("ROLE_" + role.getName());
-
-            });
-        return stringJoiner.toString();
-    }
 }

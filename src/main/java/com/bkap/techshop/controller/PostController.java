@@ -25,17 +25,20 @@ public class PostController {
                 .message(HttpStatus.OK.getReasonPhrase())
                 .result(posts)
                 .build();
-
     }
 
     @PostMapping
     public ApiResponse<PostResponse> createPost(@ModelAttribute PostRequestDto request){
-        PostResponse response = postService.create(request);
-        return ApiResponse.<PostResponse>builder()
-                .code(HttpStatus.CREATED.value())
-                .message(HttpStatus.CREATED.getReasonPhrase())
-                .result(response)
-                .build();
+        try {
+            PostResponse response = postService.create(request);
+            return ApiResponse.<PostResponse>builder()
+                    .code(HttpStatus.CREATED.value())
+                    .message(HttpStatus.CREATED.getReasonPhrase())
+                    .result(response)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -65,16 +68,12 @@ public class PostController {
 
     @GetMapping("/search/{title}")
     public ApiResponse<List<PostResponse>> getPostsByTitle(@PathVariable String title){
-        try {
-            List<PostResponse> posts = postService.findByTitle(title);
-            return ApiResponse.<List<PostResponse>>builder()
-                    .code(HttpStatus.OK.value())
-                    .message(HttpStatus.OK.getReasonPhrase())
-                    .result(posts)
-                    .build();
-        } catch (Exception e) {
-            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
-        }
+        List<PostResponse> posts = postService.findByTitle(title);
+        return ApiResponse.<List<PostResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.getReasonPhrase())
+                .result(posts)
+                .build();
     }
 
     @DeleteMapping("/{id}")

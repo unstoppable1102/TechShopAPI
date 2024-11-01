@@ -42,6 +42,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse save(CategoryRequest request) {
+        if (categoryRepository.existsByName(request.getName())) {
+            throw new AppException(ErrorCode.CATEGORY_EXISTED);
+        }
         Category category = modelMapper.map(request, Category.class);
         return modelMapper.map(categoryRepository.save(category), CategoryResponse.class);
     }

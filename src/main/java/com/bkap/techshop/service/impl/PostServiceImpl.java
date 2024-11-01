@@ -45,8 +45,13 @@ public class PostServiceImpl implements PostService {
         PostCategory postCategory =postCategoryRepository.findById(request.getPostCategoryId())
                 .orElseThrow(() -> new AppException(ErrorCode.POST_CATEGORY_NOT_FOUND));
 
+        if (postRepository.existsByTitleIgnoreCase(request.getTitle())) {
+            throw new AppException(ErrorCode.POST_EXISTED);
+        }
+
         Post post = modelMapper.map(request, Post.class);
         post.setPostCategory(postCategory);
+        post.setId(null);
 
         //Xu ly lưu file ảnh
         String imagePath = uploadFileUtil.saveImage(request.getImage());
@@ -84,8 +89,9 @@ public class PostServiceImpl implements PostService {
     public List<PostResponse> findByTitle(String title) {
         List<Post> posts = postRepository.findByTitleContainingIgnoreCase(title);
 
-        return posts.stream().map((element) -> modelMapper.
-                map(element, PostResponse.class)).collect(Collectors.toList());
+        return posts.stream()
+                .map((element) -> modelMapper.map(element, PostResponse.class))
+                .collect(Collectors.toList());
     }
 
 

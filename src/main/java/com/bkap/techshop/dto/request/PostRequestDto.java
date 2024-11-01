@@ -12,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequestDto implements Serializable {
+
     private  String title;
     private  String shortDescription;
     private  String content;

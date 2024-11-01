@@ -46,6 +46,10 @@ public class ProductServiceImpl implements ProductService{
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
 
+        if (productRepository.existsByProductName(request.getProductName())) {
+            throw new AppException(ErrorCode.PRODUCT_EXISTED);
+        }
+
         Product product = modelMapper.map(request, Product.class);
         product.setCategory(category);
         product.setId(null);

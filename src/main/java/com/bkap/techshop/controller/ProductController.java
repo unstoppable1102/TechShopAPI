@@ -19,13 +19,17 @@ public class ProductController {
 
     @PostMapping
     public ApiResponse<ProductResponse> createProduct(@ModelAttribute ProductCreateRequest request){
-        ProductResponse productResponse = productService.createProduct(request);
+        try {
+            ProductResponse productResponse = productService.createProduct(request);
 
-        return ApiResponse.<ProductResponse>builder()
-                .code(HttpStatus.CREATED.value())
-                .message(HttpStatus.CREATED.getReasonPhrase())
-                .result(productResponse)
-                .build();
+            return ApiResponse.<ProductResponse>builder()
+                    .code(HttpStatus.CREATED.value())
+                    .message(HttpStatus.CREATED.getReasonPhrase())
+                    .result(productResponse)
+                    .build();
+        } catch (Exception e) {
+           return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
 
     @GetMapping

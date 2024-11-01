@@ -31,6 +31,13 @@ public class PostCategoryServiceImpl implements PostCategoryService {
     }
 
     @Override
+    public List<PostCategoryResponse> findByName(String name) {
+        return postCategoryRepository.findByNameContainingIgnoreCase(name).stream()
+                .map((element) -> modelMapper.map(element, PostCategoryResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public PostCategoryResponse findById(Long id) {
         PostCategory postCategory = postCategoryRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_CATEGORY_NOT_FOUND));
@@ -39,6 +46,10 @@ public class PostCategoryServiceImpl implements PostCategoryService {
 
     @Override
     public PostCategoryResponse create(PostCategoryRequest request) {
+
+        if (postCategoryRepository.existsByName(request.getName())) {
+            throw new AppException(ErrorCode.POST_CATEGORY_EXISTED);
+        }
         PostCategory postCategory = modelMapper.map(request, PostCategory.class);
 
         return modelMapper.map(postCategoryRepository.save(postCategory), PostCategoryResponse.class);

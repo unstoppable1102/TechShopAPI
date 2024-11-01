@@ -28,17 +28,21 @@ public class PostCategoryController {
     }
 
     @PostMapping
-    public ApiResponse<PostCategoryResponse> createPostCategory(@RequestBody PostCategoryRequest request) {
-        PostCategoryResponse response = postCategoryService.create(request);
-        return ApiResponse.<PostCategoryResponse>builder()
-                .code(HttpStatus.CREATED.value())
-                .message(HttpStatus.CREATED.getReasonPhrase())
-                .result(response)
-                .build();
+    public ApiResponse<PostCategoryResponse> create(@RequestBody PostCategoryRequest request) {
+        try {
+            PostCategoryResponse response = postCategoryService.create(request);
+            return ApiResponse.<PostCategoryResponse>builder()
+                    .code(HttpStatus.CREATED.value())
+                    .message(HttpStatus.CREATED.getReasonPhrase())
+                    .result(response)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<PostCategoryResponse> getPostCategoryById(@PathVariable Long id) {
+    public ApiResponse<PostCategoryResponse> getById(@PathVariable Long id) {
         try {
             PostCategoryResponse response = postCategoryService.findById(id);
             return ApiResponse.<PostCategoryResponse>builder()
@@ -51,14 +55,31 @@ public class PostCategoryController {
         }
     }
 
+    @GetMapping("/search/{name}")
+    public ApiResponse<List<PostCategoryResponse>> getByName(@PathVariable String name) {
+        try {
+            return ApiResponse.<List<PostCategoryResponse>>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(postCategoryService.findByName(name))
+                    .build();
+        }catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public ApiResponse<PostCategoryResponse> updatePostCategory(@PathVariable Long id, @RequestBody PostCategoryRequest request) {
-        PostCategoryResponse response = postCategoryService.update(id, request);
-        return ApiResponse.<PostCategoryResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(response)
-                .build();
+        try {
+            PostCategoryResponse response = postCategoryService.update(id, request);
+            return ApiResponse.<PostCategoryResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(response)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

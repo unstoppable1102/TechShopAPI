@@ -24,11 +24,15 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ApiResponse<TokenResponse> login(@RequestBody SignInRequest request) {
-        return ApiResponse.<TokenResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(authenticationService.authenticate(request))
-                .build();
+        try {
+            return ApiResponse.<TokenResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(authenticationService.authenticate(request))
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
 
     }
 
@@ -51,21 +55,27 @@ public class AuthenticationController {
 
     @PostMapping("/refresh")
     public ApiResponse<TokenResponse> refresh(HttpServletRequest request) {
-        return ApiResponse.<TokenResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(authenticationService.refreshToken(request))
-                .build();
+        try {
+            return ApiResponse.<TokenResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(authenticationService.refreshToken(request))
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
 
     @PostMapping("/logout")
     public ApiResponse<String> logout(HttpServletRequest request) {
-        return ApiResponse.<String>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(authenticationService.logout(request))
-                .build();
+        try {
+            return ApiResponse.<String>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(authenticationService.logout(request))
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
     }
-
-
 }

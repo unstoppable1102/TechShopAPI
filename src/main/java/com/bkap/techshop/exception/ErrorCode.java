@@ -28,6 +28,13 @@ public enum ErrorCode {
     POST_EXIST_IN_POST_CATEGORY(1016, "post exist in post category", HttpStatus.BAD_REQUEST),
     COMMENT_NOT_FOUND(1017, "Comment not found", HttpStatus.BAD_REQUEST),
     CART_NOT_FOUND(1018, "Cart not found", HttpStatus.BAD_REQUEST),
+    PRODUCT_EXISTED(1019, "Product has already existed", HttpStatus.BAD_REQUEST),
+    POST_EXISTED(1020, "Post has already existed", HttpStatus.BAD_REQUEST),
+    CATEGORY_EXISTED(1021, "Category has already existed", HttpStatus.BAD_REQUEST),
+    POST_CATEGORY_EXISTED(1022, "Post Category has already existed", HttpStatus.BAD_REQUEST),
+    LOGIN_FAIL(1023, "Username or password is incorrect!", HttpStatus.BAD_REQUEST),
+    TOKEN_REQUIRED(1024, "Token must be not blank", HttpStatus.BAD_REQUEST),
+    INVALID_TOKEN(1025, "Token is invalid", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

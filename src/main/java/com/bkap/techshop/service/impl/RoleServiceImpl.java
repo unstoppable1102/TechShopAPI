@@ -23,9 +23,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleResponse> getAll() {
         List<Role> roles = roleRepository.findAll();
-        return roles.stream().map((role) -> modelMapper.map(role, RoleResponse.class))
+        return roles.stream()
+                .map((role) -> modelMapper.map(role, RoleResponse.class))
                 .collect(Collectors.toList());
-
     }
 
     @Override

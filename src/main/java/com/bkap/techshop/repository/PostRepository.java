@@ -10,4 +10,5 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     boolean existsByPostCategoryId(Long postCategoryId);
     List<Post> findByTitleContainingIgnoreCase(String title);
+    boolean existsByTitleIgnoreCase(String title);
 }
