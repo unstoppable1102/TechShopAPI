@@ -7,10 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class OrderItemRequest {
-    private long userId;
+@AllArgsConstructor
+public class WishlistRequest {
+
     private long productId;
-    private int quantity;
+    private long userId;
+
 }

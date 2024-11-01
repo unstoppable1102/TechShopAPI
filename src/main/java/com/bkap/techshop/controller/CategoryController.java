@@ -43,11 +43,15 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ApiResponse<CategoryResponse> findById(@PathVariable long id){
         CategoryResponse categoryResponse = categoryService.findById(id);
-        return ApiResponse.<CategoryResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(categoryResponse)
-                .build();
+        try {
+            return ApiResponse.<CategoryResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(categoryResponse)
+                    .build();
+        }catch (Exception e){
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @GetMapping("/search/{name}")
@@ -72,10 +76,14 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete( @PathVariable long id){
-        categoryService.delete(id);
-        return ApiResponse.<Void>builder()
-                .code(HttpStatus.OK.value())
-                .message("Category is deleted successfully!")
-                .build();
+        try {
+            categoryService.delete(id);
+            return ApiResponse.<Void>builder()
+                    .code(HttpStatus.OK.value())
+                    .message("Category is deleted successfully!")
+                    .build();
+        }catch (Exception e){
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.bkap.techshop.dto.request;
+package com.bkap.techshop.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class OrderItemRequest {
-    private long userId;
+@AllArgsConstructor
+public class WishlistResponse {
+
     private long productId;
-    private int quantity;
+    private String productName;
+    private double price;
+
+
 }

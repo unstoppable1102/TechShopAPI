@@ -1,16 +1,13 @@
 package com.bkap.techshop.service;
 
-import com.bkap.techshop.entity.Wishlist;
+import com.bkap.techshop.dto.request.WishlistRequest;
+import com.bkap.techshop.dto.response.WishlistResponse;
 
 import java.util.List;
 
 public interface WishlistService {
 
-    List<Wishlist> findWishlistsByUserId(long userId);
-    List<Long> getWishlistProductIds(long productId);
-    List<Wishlist> findAll();
-    Wishlist findById(long id);
-    Wishlist save(Wishlist wishlist);
-    Wishlist update(Wishlist wishlist);
+    List<WishlistResponse> findWishlistsByUserId(long userId);
+    WishlistResponse save(WishlistRequest request);
     void delete(long id);
 }

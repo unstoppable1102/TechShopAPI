@@ -3,6 +3,10 @@ package com.bkap.techshop.controller;
 import com.bkap.techshop.dto.request.CartItemRequest;
 import com.bkap.techshop.dto.response.ApiResponse;
 import com.bkap.techshop.dto.response.CartItemResponse;
+import com.bkap.techshop.entity.Product;
+import com.bkap.techshop.exception.AppException;
+import com.bkap.techshop.exception.ErrorCode;
+import com.bkap.techshop.repository.ProductRepository;
 import com.bkap.techshop.service.CartItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,13 +20,14 @@ import java.util.List;
 public class CartController {
 
     private final CartItemService cartItemService;
+    private final ProductRepository productRepository;
 
-    @ModelAttribute("totalPrice")
+    @GetMapping("/total-price")
     public Double getTotalPrice(@RequestParam("userId") long userId) {
         return cartItemService.calculateTotalPrice(userId);
     }
 
-    @ModelAttribute("countCartItem")
+    @GetMapping("/count-cart-item")
     public long getCountCartItem(@RequestParam("userId") long userId) {
         return cartItemService.countItemsInCart(userId);
     }
@@ -39,8 +44,11 @@ public class CartController {
     }
 
     @PostMapping
-    public ApiResponse<CartItemResponse> addItemToCart(@RequestBody CartItemRequest request) {
+    public ApiResponse<CartItemResponse> addToCart(@RequestBody CartItemRequest request) {
+        Product p = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
         CartItemResponse addCartItem = cartItemService.addCartItem(request);
+        addCartItem.setPrice(p.getPrice());
 
         return ApiResponse.<CartItemResponse>builder()
                 .code(HttpStatus.CREATED.value())

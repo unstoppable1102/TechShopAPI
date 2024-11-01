@@ -48,6 +48,7 @@ public class ProductServiceImpl implements ProductService{
 
         Product product = modelMapper.map(request, Product.class);
         product.setCategory(category);
+        product.setId(null);
 
         //Xu ly lưu file ảnh
         String imagePath = uploadFileUtil.saveImage(request.getImage());

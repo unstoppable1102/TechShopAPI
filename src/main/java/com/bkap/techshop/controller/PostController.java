@@ -40,12 +40,16 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ApiResponse<PostResponse> getPostById(@PathVariable Long id){
-        PostResponse response = postService.findById(id);
-        return ApiResponse.<PostResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(response)
-                .build();
+        try {
+            PostResponse response = postService.findById(id);
+            return ApiResponse.<PostResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(response)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -61,20 +65,28 @@ public class PostController {
 
     @GetMapping("/search/{title}")
     public ApiResponse<List<PostResponse>> getPostsByTitle(@PathVariable String title){
-        List<PostResponse> posts = postService.findByTitle(title);
-        return ApiResponse.<List<PostResponse>>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(posts)
-                .build();
+        try {
+            List<PostResponse> posts = postService.findByTitle(title);
+            return ApiResponse.<List<PostResponse>>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(posts)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deletePost(@PathVariable Long id){
-        postService.delete(id);
-        return ApiResponse.<Void>builder()
-                .code(HttpStatus.NO_CONTENT.value())
-                .message("Post is deleted successfully!")
-                .build();
+        try {
+            postService.delete(id);
+            return ApiResponse.<Void>builder()
+                    .code(HttpStatus.NO_CONTENT.value())
+                    .message("Post is deleted successfully!")
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 }

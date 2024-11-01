@@ -13,8 +13,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class CategoryResponse implements Serializable {
-    private Long id;       // ID của danh mục
-    private String name;      // Tên của danh mục
-    private boolean status;      // Trạng thái của danh mục
-    private List<ProductResponse> products;
+
+    private Long id;
+    private String name;
+    private boolean status;
 }

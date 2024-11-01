@@ -9,13 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponse<T> {
+public class ResponseError {
     private int code;
     private String message;
-    private T result;
-
-    // Factory method for error case.
-    public static <T> ApiResponse<T> errorResponse(int code, String message) {
-        return new ApiResponse<>(code, message, null);
-    }
 }

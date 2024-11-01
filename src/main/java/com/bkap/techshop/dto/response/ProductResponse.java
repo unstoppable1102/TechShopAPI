@@ -15,11 +15,9 @@ public class ProductResponse {
     private String productName;
     private boolean status;
     private double price;
-    private double priceOld;
     private int quantity;
     private String description;
     private String image;
-    private Long categoryId;
     private String categoryName; // Để hiển thị tên danh mục nếu cần
 
 }

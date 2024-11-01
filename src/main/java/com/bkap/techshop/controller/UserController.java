@@ -27,22 +27,18 @@ public class UserController {
                 .build();
     }
 
-    @PostMapping
-    public ApiResponse<UserResponse> save(@RequestBody UserRequestDto request){
-        return ApiResponse.<UserResponse>builder()
-                .code(HttpStatus.CREATED.value())
-                .message(HttpStatus.CREATED.getReasonPhrase())
-                .result(userService.save(request))
-                .build();
-    }
 
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> findById(@PathVariable Long id){
-        return ApiResponse.<UserResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(userService.findById(id))
-                .build();
+        try {
+            return ApiResponse.<UserResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(userService.findById(id))
+                    .build();
+        }catch (Exception e){
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -57,10 +53,14 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<UserResponse> delete(@PathVariable Long id){
-        userService.delete(id);
-        return ApiResponse.<UserResponse>builder()
-                .code(HttpStatus.NO_CONTENT.value())
-                .message("User is deleted successfully!")
-                .build();
+        try {
+            userService.delete(id);
+            return ApiResponse.<UserResponse>builder()
+                    .code(HttpStatus.NO_CONTENT.value())
+                    .message("User is deleted successfully!")
+                    .build();
+        }catch (Exception e){
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 }

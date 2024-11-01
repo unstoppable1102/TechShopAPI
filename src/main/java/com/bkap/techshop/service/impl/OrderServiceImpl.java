@@ -18,11 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
 
     @Override
-    public OrderResponse createOrder(Long userId, OrderRequest orderRequest) {
+    public OrderResponse createOrder(Long userId, OrderRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->new AppException(ErrorCode.USER_NOT_FOUND));
 
@@ -46,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         double totalPrice = 0.0;
 
-        for(OrderItemRequest itemRequest : orderRequest.getItems()) {
+        for(OrderItemRequest itemRequest : request.getItems()) {
             Product product = productRepository.findById(itemRequest.getProductId())
                     .orElseThrow(() ->new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 

@@ -40,22 +40,30 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ApiResponse<ProductResponse> getProductById(@PathVariable long id){
-        ProductResponse product = productService.getProductById(id);
-        return ApiResponse.<ProductResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(product)
-                .build();
+        try {
+            ProductResponse product = productService.getProductById(id);
+            return ApiResponse.<ProductResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(product)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @GetMapping("/search/{name}")
     public ApiResponse<List<ProductResponse>> findProductByName(@PathVariable String name){
-        List<ProductResponse> productResponses = productService.findByProductName(name);
-        return ApiResponse.<List<ProductResponse>>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(productResponses)
-                .build();
+        try {
+            List<ProductResponse> productResponses = productService.findByProductName(name);
+            return ApiResponse.<List<ProductResponse>>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(productResponses)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -70,11 +78,15 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteProduct( @PathVariable long id){
-        productService.deleteProduct(id);
-        return ApiResponse.<Void>builder()
-                .code(HttpStatus.NO_CONTENT.value())
-                .message("Product is deleted successfully!")
-                .build();
+        try {
+            productService.deleteProduct(id);
+            return ApiResponse.<Void>builder()
+                    .code(HttpStatus.NO_CONTENT.value())
+                    .message("Product is deleted successfully!")
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
 
     }
 }

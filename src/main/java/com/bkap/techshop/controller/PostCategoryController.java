@@ -39,12 +39,16 @@ public class PostCategoryController {
 
     @GetMapping("/{id}")
     public ApiResponse<PostCategoryResponse> getPostCategoryById(@PathVariable Long id) {
-        PostCategoryResponse response = postCategoryService.findById(id);
-        return ApiResponse.<PostCategoryResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(response)
-                .build();
+        try {
+            PostCategoryResponse response = postCategoryService.findById(id);
+            return ApiResponse.<PostCategoryResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(response)
+                    .build();
+        }catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -59,10 +63,14 @@ public class PostCategoryController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deletePostCategory(@PathVariable Long id) {
-        postCategoryService.delete(id);
-        return ApiResponse.<Void>builder()
-                .code(HttpStatus.NO_CONTENT.value())
-                .message("Post Category is deleted successfully!")
-                .build();
+        try {
+            postCategoryService.delete(id);
+            return ApiResponse.<Void>builder()
+                    .code(HttpStatus.NO_CONTENT.value())
+                    .message("Post Category is deleted successfully!")
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 }
