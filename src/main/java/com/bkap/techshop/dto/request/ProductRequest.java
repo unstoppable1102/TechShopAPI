@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Setter
 @Getter
-public class ProductCreateRequest implements Serializable {
+public class ProductRequest implements Serializable {
 
     private String productName;
     private boolean status;
