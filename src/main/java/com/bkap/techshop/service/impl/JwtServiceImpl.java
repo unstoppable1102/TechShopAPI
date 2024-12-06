@@ -1,5 +1,6 @@
 package com.bkap.techshop.service.impl;
 
+import com.bkap.techshop.entity.User;
 import com.bkap.techshop.service.JwtService;
 import com.bkap.techshop.common.util.TokenType;
 import io.jsonwebtoken.Claims;
@@ -11,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 import static com.bkap.techshop.common.util.TokenType.ACCESS_TOKEN;
@@ -108,5 +107,17 @@ public class JwtServiceImpl implements JwtService {
 
     private Claims extractAllClaim(String token, TokenType type){
         return Jwts.parserBuilder().setSigningKey(getKey(type)).build().parseClaimsJws(token).getBody();
+    }
+
+    private String buildScope(User user) {
+        StringJoiner stringJoiner =new StringJoiner(" ");
+
+        if (!CollectionUtils.isEmpty(user.getRoles())) {
+            user.getRoles().forEach(role ->{
+                stringJoiner.add("ROLE_" + role.getName());
+
+            });
+        }
+        return stringJoiner.toString();
     }
 }

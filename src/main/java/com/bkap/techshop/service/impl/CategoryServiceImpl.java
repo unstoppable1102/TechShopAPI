@@ -33,10 +33,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public List<CategoryResponse> findAll() {
         List<Category> categoryList = categoryRepository.findAll();
-        return categoryList.stream().map((element) -> modelMapper.map(element, CategoryResponse.class))
+        return categoryList.stream()
+                .map((element) -> modelMapper.map(element, CategoryResponse.class))
                 .collect(Collectors.toList());
     }
 
@@ -71,7 +71,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryResponse> findByName(String name) {
         List<Category> categoryList = categoryRepository.findByNameContainingIgnoreCase(name);
-        return categoryList.stream().map((element) -> modelMapper.map(element, CategoryResponse.class))
+        return categoryList.stream()
+                .map((element) -> modelMapper.map(element, CategoryResponse.class))
                 .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,6 @@
 package com.bkap.techshop.controller;
 
-import com.bkap.techshop.dto.request.ProductCreateRequest;
+import com.bkap.techshop.dto.request.ProductRequest;
 import com.bkap.techshop.dto.response.ApiResponse;
 import com.bkap.techshop.dto.response.ProductResponse;
 import com.bkap.techshop.service.ProductService;
@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ApiResponse<ProductResponse> createProduct(@ModelAttribute ProductCreateRequest request){
+    public ApiResponse<ProductResponse> createProduct(@ModelAttribute ProductRequest request){
         try {
             ProductResponse productResponse = productService.createProduct(request);
 
@@ -71,7 +71,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<ProductResponse> updateProduct(@PathVariable long id, @ModelAttribute ProductCreateRequest request){
+    public ApiResponse<ProductResponse> updateProduct(@PathVariable long id, @ModelAttribute ProductRequest request){
         ProductResponse updateProduct = productService.updateProduct(id, request);
         return ApiResponse.<ProductResponse>builder()
                 .code(HttpStatus.OK.value())

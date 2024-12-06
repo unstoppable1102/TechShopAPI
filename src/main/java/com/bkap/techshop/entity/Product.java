@@ -36,6 +36,6 @@ public class Product extends BaseModel{
     private String image;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "categoryId", insertable = true, updatable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 }

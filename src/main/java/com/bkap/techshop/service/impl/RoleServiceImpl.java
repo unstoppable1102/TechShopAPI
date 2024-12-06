@@ -9,6 +9,7 @@ import com.bkap.techshop.repository.RoleRepository;
 import com.bkap.techshop.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class RoleServiceImpl implements RoleService {
     private final ModelMapper modelMapper;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public List<RoleResponse> getAll() {
         List<Role> roles = roleRepository.findAll();
         return roles.stream()

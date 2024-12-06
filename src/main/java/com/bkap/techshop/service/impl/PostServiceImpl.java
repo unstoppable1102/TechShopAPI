@@ -28,7 +28,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostResponse> findAll() {
         List<Post> posts = postRepository.findAll();
-        return posts.stream().map((e) -> modelMapper.map(e, PostResponse.class))
+        return posts.stream()
+                .map((e) -> modelMapper.map(e, PostResponse.class))
                 .collect(Collectors.toList());
     }
 

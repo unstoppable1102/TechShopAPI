@@ -5,17 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentRequestDto {
+public class CommentRequestDto implements Serializable {
 
-    private Long parentId; // ID của comment cha (nếu là comment con)
+    private long parentId; // ID của comment cha (nếu là comment con)
 
-    private Long postId; // ID của bài viết mà comment thuộc về
+    private long postId; // ID của bài viết mà comment thuộc về
 
-    private Long userId; // ID của người dùng tạo comment
+    private long userId; // ID của người dùng tạo comment
 
     private String content; // Nội dung của comment
 

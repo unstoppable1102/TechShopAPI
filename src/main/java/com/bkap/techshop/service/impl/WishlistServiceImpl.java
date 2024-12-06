@@ -49,7 +49,7 @@ public class WishlistServiceImpl implements WishlistService {
 
         Wishlist exists = wishlistRepository.findByUserIdAndProductId(request.getUserId(), product.getId());
         if (exists != null) {
-            return modelMapper.map(wishlistRepository.save(exists), WishlistResponse.class);
+            return modelMapper.map(exists, WishlistResponse.class);
 
         }else {
             Wishlist wishlist = new Wishlist();

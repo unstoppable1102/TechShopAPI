@@ -43,12 +43,16 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ApiResponse<UserResponse> update(@PathVariable Long id, @RequestBody UserRequestDto request){
-        UserResponse updatedUser = userService.update(id, request);
-        return ApiResponse.<UserResponse>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .result(updatedUser)
-                .build();
+        try {
+            UserResponse updatedUser = userService.update(id, request);
+            return ApiResponse.<UserResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .message(HttpStatus.OK.getReasonPhrase())
+                    .result(updatedUser)
+                    .build();
+        } catch (Exception e) {
+            return ApiResponse.errorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
